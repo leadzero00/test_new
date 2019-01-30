@@ -30,7 +30,8 @@ class MyMAinPage extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return DefaultTabController(
+    return MaterialApp(
+      home: DefaultTabController(
       length: 4,
       child:  Scaffold(
       appBar: AppBar(
@@ -76,11 +77,20 @@ class MyMAinPage extends StatelessWidget{
             icon: Icon(Icons.center_focus_strong),
             text: '我的')
         ],
-      ), 
       ),
-   
+      ),
+    // body: MyHomePage(),
+    body: TabBarView(
+      children: choices.map((Choice choice){
+        return new Padding(
+          padding:const EdgeInsets.all(16.0),
+          child: new ChoiceCard(choice: choice),
+        );
+        }).toList(),
+      ),
     ),
-    ) ;
+    ),
+    );
   }
 
 }
@@ -166,6 +176,46 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    
+    );
+  }
+}
+
+class Choice {
+  const Choice({ this.title, this.icon });
+  final String title;
+  final IconData icon;
+}
+
+const List<Choice> choices = const <Choice>[
+  const Choice(title: 'CAR', icon: Icons.directions_car),
+  const Choice(title: 'BICYCLE', icon: Icons.directions_bike),
+  const Choice(title: 'BOAT', icon: Icons.directions_boat),
+  const Choice(title: 'BUS', icon: Icons.directions_bus),
+  const Choice(title: 'TRAIN', icon: Icons.directions_railway),
+  const Choice(title: 'WALK', icon: Icons.directions_walk),
+];
+
+class ChoiceCard extends StatelessWidget {
+  const ChoiceCard({ Key key, this.choice }) : super(key: key);
+
+  final Choice choice;
+
+  @override
+  Widget build(BuildContext context) {
+    final TextStyle textStyle = Theme.of(context).textTheme.display1;
+    return new Card(
+      color: Colors.white,
+      child: new Center(
+        child: new Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            new Icon(choice.icon, size: 128.0, color: textStyle.color),
+            new Text(choice.title, style: textStyle),
+          ],
+        ),
+      ),
     );
   }
 }
